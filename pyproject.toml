@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "rag-webapp"
+version = "0.1.0"
+description = "A Retrieval-Augmented Generation web application for querying documents."
+authors = ["EMCP <emcp@enser.io>"]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.10"
+streamlit = "^1.35.0"
+requests = "^2.32.3"
+opensearch-py = "^2.6.0"
+python-dotenv = "^1.0.1"
+boto3 = "^1.34.120"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
