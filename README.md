@@ -10,6 +10,7 @@ Also create a local `.env` file containing the needed arguments like so:
 
 ```commandline
 cp .env.template .env
+chmod 600 .env
 ```
 
 ## Getting started: WebApp
