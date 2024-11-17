@@ -7,17 +7,19 @@ from common.bedrock_client import get_bedrock_client
 from common.claude3 import process_search_results, query_claude
 from common.opensearch_searches import search_by_vector
 
-index_name = 'YOUR_INDEX_HERE'
-
 load_dotenv()
 
-OPENSEARCH_PASSWD = os.getenv("OPENSEARCH_INITIAL_PASSWORD")
-IAM_ROLE_STRING = os.getenv("IAM_ROLE_STRING")
+OPENSEARCH_PASSWD = os.getenv("OPENSEARCH_PASSWORD")
+OPENSEARCH_USERNAME = os.getenv("OPENSEARCH_USERNAME")
 OPENSEARCH_IP = os.getenv("OPENSEARCH_IP")
+OPENSEARCH_TARGET_INDEX = os.getenv("OPENSEARCH_TARGET_INDEX")
+
+IAM_ROLE_STRING = os.getenv("IAM_ROLE_STRING")
+
 
 opensearch = OpenSearch(
     hosts=[{'host': OPENSEARCH_IP, 'port': 9200}],
-    http_auth=('admin', OPENSEARCH_PASSWD),
+    http_auth=(OPENSEARCH_USERNAME, OPENSEARCH_PASSWD),
     use_ssl=True,
     verify_certs=False,
     connection_class=RequestsHttpConnection
@@ -28,7 +30,7 @@ boto3_bedrock_runtime = get_bedrock_client(assumed_role=IAM_ROLE_STRING)
 
 def response_generator(question):
 
-    documents = search_by_vector(opensearch, boto3_bedrock_runtime, index_name, question)
+    documents = search_by_vector(opensearch, boto3_bedrock_runtime, OPENSEARCH_TARGET_INDEX, question)
     context = process_search_results(documents)
 
     prompt = f"""
@@ -50,7 +52,7 @@ def response_generator(question):
 
 
 st.title("Document Question Answering")
-st.header(index_name)
+st.header(OPENSEARCH_TARGET_INDEX)
 
 # Initialize chat history
 if "messages" not in st.session_state:
