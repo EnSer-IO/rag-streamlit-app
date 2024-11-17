@@ -17,6 +17,7 @@ cp .env.template .env
 Using a venv (Virtual Environment) perform the following install steps.
 
 ```commandline
+pip install --upgrade pip
 pip install poetry
 poetry install
 streamlit run rag-webapp/main.py
