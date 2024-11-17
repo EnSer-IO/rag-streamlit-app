@@ -12,16 +12,18 @@ index_name = 'YOUR_INDEX_HERE'
 load_dotenv()
 
 OPENSEARCH_PASSWD = os.getenv("OPENSEARCH_INITIAL_PASSWORD")
+IAM_ROLE_STRING = os.getenv("IAM_ROLE_STRING")
+OPENSEARCH_IP = os.getenv("OPENSEARCH_IP")
 
 opensearch = OpenSearch(
-    hosts=[{'host': '127.0.0.1', 'port': 9200}],
+    hosts=[{'host': OPENSEARCH_IP, 'port': 9200}],
     http_auth=('admin', OPENSEARCH_PASSWD),
     use_ssl=True,
     verify_certs=False,
     connection_class=RequestsHttpConnection
 )
 
-boto3_bedrock_runtime = get_bedrock_client(assumed_role="IAM_ROLE_STRING")
+boto3_bedrock_runtime = get_bedrock_client(assumed_role=IAM_ROLE_STRING)
 
 
 def response_generator(question):
@@ -47,7 +49,7 @@ def response_generator(question):
     yield model_response
 
 
-st.title("Legal Document Question Answering")
+st.title("Document Question Answering")
 st.header(index_name)
 
 # Initialize chat history
